@@ -22,23 +22,23 @@ SauceDemo Playwright/
 ## Test Scenarios in `Login Scenarios`
 
 1. **Scenario 1 (Negative): Login with invalid username**
-   - Username: `standard_us`
-   - Password: `secret_sauce`
+   - Username: `input invalid username`
+   - Password: `input valid password`
    - Validation: Error message appears (`Epic sadface: Username and password do not match any user in this service`).
 
 2. **Scenario 2 (Negative): Login with invalid password**
-   - Username: `standard_user`
-   - Password: `secret_sa`
+   - Username: `input valid username`
+   - Password: `input invalid password`
    - Validation: Error message appears (`Epic sadface: Username and password do not match any user in this service`).
 
 3. **Scenario 3 (Negative): Login with non-existent account**
    - Username: `unregistered_user` (not in accepted usernames list)
-   - Password: `secret_sauce`
+   - Password: `secret_sauc`
    - Validation: Error message appears (`Epic sadface: Username and password do not match any user in this service`).
 
 4. **Scenario 4 (Positive): Login with valid credentials (2 Different Accounts)**
-   - Account 1: `standard_user` + `secret_sauce`
-   - Account 2: `visual_user` + `secret_sauce`
+   - Account 1: `valid username 1` + `valid password`
+   - Account 2: `valid username 2` + `valid password`
    - Validation:
      - Screenshot captured on credentials input before submission.
      - Successfully navigated to `/inventory.html`.
@@ -51,7 +51,7 @@ SauceDemo Playwright/
 
 Open a terminal in the project folder:
 ```powershell
-cd "C:\INDAH AUTOMATION\SauceDemo Playwright"
+cd "XXX"
 ```
 
 1. **Run all tests:**
