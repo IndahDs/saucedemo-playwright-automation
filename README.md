@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # SauceDemo Automation Testing with Playwright (JavaScript)
 
 Proyek automation testing untuk website [SauceDemo](https://www.saucedemo.com/) menggunakan Playwright dan JavaScript dengan pola Page Object Model (POM).
@@ -96,3 +97,7 @@ Setiap test juga otomatis menyertakan **screenshot** bukti validasi (error messa
    ```bash
    npm run allure:serve
    ```
+=======
+# saucedemo-playwright-automation
+SauceDemo Web automation testing using Playwright JavaScript and Allure Report
+>>>>>>> 6a0451a5f52cb7408590f155a9a13db0da86dc74
