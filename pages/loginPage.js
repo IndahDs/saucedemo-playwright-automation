@@ -14,10 +14,18 @@ class LoginPage {
     await this.page.goto('/');
   }
 
-  async login(username, password) {
+  async fillCredentials(username, password) {
     await this.usernameInput.fill(username);
     await this.passwordInput.fill(password);
+  }
+
+  async clickLogin() {
     await this.loginButton.click();
+  }
+
+  async login(username, password) {
+    await this.fillCredentials(username, password);
+    await this.clickLogin();
   }
 
   async getErrorMessage() {

@@ -42,8 +42,10 @@ test.describe('SauceDemo - Skenario Login', () => {
       await expect(loginPage.errorMessage).toContainText(
         'Epic sadface: Username and password do not match any user in this service'
       );
+      const errorScreenshot = await page.screenshot();
+      await allure.attachment('Screenshot Validasi Error Username', errorScreenshot, 'image/png');
       await testInfo.attach('Screenshot Validasi Error Username', {
-        body: await page.screenshot(),
+        body: errorScreenshot,
         contentType: 'image/png'
       });
       await page.waitForTimeout(1500);
@@ -65,8 +67,10 @@ test.describe('SauceDemo - Skenario Login', () => {
       await expect(loginPage.errorMessage).toContainText(
         'Epic sadface: Username and password do not match any user in this service'
       );
+      const errorScreenshot = await page.screenshot();
+      await allure.attachment('Screenshot Validasi Error Password', errorScreenshot, 'image/png');
       await testInfo.attach('Screenshot Validasi Error Password', {
-        body: await page.screenshot(),
+        body: errorScreenshot,
         contentType: 'image/png'
       });
       await page.waitForTimeout(1500);
@@ -88,8 +92,10 @@ test.describe('SauceDemo - Skenario Login', () => {
       await expect(loginPage.errorMessage).toContainText(
         'Epic sadface: Username and password do not match any user in this service'
       );
+      const errorScreenshot = await page.screenshot();
+      await allure.attachment('Screenshot Validasi Error Unregistered User', errorScreenshot, 'image/png');
       await testInfo.attach('Screenshot Validasi Error Unregistered User', {
-        body: await page.screenshot(),
+        body: errorScreenshot,
         contentType: 'image/png'
       });
       await page.waitForTimeout(1500);
@@ -105,8 +111,19 @@ test.describe('SauceDemo - Skenario Login', () => {
       await allure.severity('critical');
       await allure.description(`Memverifikasi alur login berhasil untuk akun valid "${username}" dan halaman katalog inventaris terbuka.`);
 
-      await test.step(`Login menggunakan akun valid "${username}"`, async () => {
-        await loginPage.login(username, 'secret_sauce');
+      await test.step(`Input kredensial valid "${username}" pada login page`, async () => {
+        await loginPage.fillCredentials(username, 'secret_sauce');
+        const inputScreenshot = await page.screenshot();
+        await allure.attachment(`Screenshot Input Kredensial Valid - ${username}`, inputScreenshot, 'image/png');
+        await testInfo.attach(`Screenshot Input Kredensial Valid - ${username}`, {
+          body: inputScreenshot,
+          contentType: 'image/png'
+        });
+        await page.waitForTimeout(1000);
+      });
+
+      await test.step('Klik tombol Login', async () => {
+        await loginPage.clickLogin();
       });
 
       await test.step('Validasi URL berpindah ke inventory.html', async () => {
@@ -116,8 +133,10 @@ test.describe('SauceDemo - Skenario Login', () => {
       await test.step('Validasi produk Sauce Labs Backpack tampil di halaman inventaris', async () => {
         await expect(inventoryPage.backpackImage).toBeVisible();
         await expect(inventoryPage.backpackImage).toHaveAttribute('alt', 'Sauce Labs Backpack');
+        const successScreenshot = await page.screenshot();
+        await allure.attachment(`Screenshot Berhasil Login - ${username}`, successScreenshot, 'image/png');
         await testInfo.attach(`Screenshot Berhasil Login - ${username}`, {
-          body: await page.screenshot(),
+          body: successScreenshot,
           contentType: 'image/png'
         });
         await page.waitForTimeout(2500);

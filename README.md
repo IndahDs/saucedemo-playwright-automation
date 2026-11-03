@@ -47,7 +47,7 @@ SauceDemo Playwright/
 
 Buka terminal di folder project:
 ```powershell
-cd "C:\INDAH AUTOMATION\SauceDemo Playwright"
+cd "xxx"
 ```
 
 1. **Jalankan semua test:**
@@ -81,7 +81,7 @@ cd "C:\INDAH AUTOMATION\SauceDemo Playwright"
 
 Setelah pengujian dijalankan (`npm test`), hasil pengujian otomatis dikelompokkan ke dalam subfolder `allure-results/` sesuai skenario (misalnya: `allure-results/Skenario Login/`).
 
-Setiap test juga otomatis menyertakan **screenshot** bukti validasi (error message atau halaman inventaris).
+Setiap test otomatis menyertakan **screenshot** bukti pengujian (input kredensial pada login page, pesan error, serta halaman katalog inventaris setelah berhasil login).
 
 1. **Generate Allure Report:**
    ```bash
