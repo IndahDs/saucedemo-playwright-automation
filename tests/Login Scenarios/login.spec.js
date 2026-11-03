@@ -3,7 +3,7 @@ const { allure } = require('allure-playwright');
 const { LoginPage } = require('../../pages/loginPage');
 const { InventoryPage } = require('../../pages/inventoryPage');
 
-test.describe('SauceDemo - Skenario Login', () => {
+test.describe('SauceDemo - Login Scenarios', () => {
   let loginPage;
   let inventoryPage;
 
@@ -13,12 +13,12 @@ test.describe('SauceDemo - Skenario Login', () => {
     loginPage = new LoginPage(page);
     inventoryPage = new InventoryPage(page);
 
-    await test.step('Buka halaman login SauceDemo', async () => {
+    await test.step('Open SauceDemo login page', async () => {
       await page.bringToFront();
       await loginPage.goto();
     });
 
-    await test.step('Maksimalkan ukuran jendela browser (Maximize Window)', async () => {
+    await test.step('Maximize browser window', async () => {
       const screenSize = await page.evaluate(() => ({
         width: window.screen.availWidth,
         height: window.screen.availHeight
@@ -27,24 +27,24 @@ test.describe('SauceDemo - Skenario Login', () => {
     });
   });
 
-  // Skenario 1 (Negative): Login dengan username yang tidak sesuai
-  test('Skenario 1 (Negative): Login dengan username yang tidak sesuai', async ({ page }, testInfo) => {
+  // Scenario 1 (Negative): Login with invalid username
+  test('Scenario 1 (Negative): Login with invalid username', async ({ page }, testInfo) => {
     await allure.story('Negative Login - Invalid Username');
     await allure.severity('normal');
-    await allure.description('Memverifikasi bahwa sistem menampilkan pesan error saat login dengan username yang salah.');
+    await allure.description('Verify that the system displays an error message when logging in with an invalid username.');
 
-    await test.step('Input username salah dan password valid lalu submit', async () => {
+    await test.step('Input invalid username and valid password then submit', async () => {
       await loginPage.login('standard_us', 'secret_sauce');
     });
 
-    await test.step('Validasi pesan error login muncul', async () => {
+    await test.step('Validate login error message is displayed', async () => {
       await expect(loginPage.errorMessage).toBeVisible();
       await expect(loginPage.errorMessage).toContainText(
         'Epic sadface: Username and password do not match any user in this service'
       );
       const errorScreenshot = await page.screenshot();
-      await allure.attachment('Screenshot Validasi Error Username', errorScreenshot, 'image/png');
-      await testInfo.attach('Screenshot Validasi Error Username', {
+      await allure.attachment('Screenshot - Invalid Username Error Validation', errorScreenshot, 'image/png');
+      await testInfo.attach('Screenshot - Invalid Username Error Validation', {
         body: errorScreenshot,
         contentType: 'image/png'
       });
@@ -52,24 +52,24 @@ test.describe('SauceDemo - Skenario Login', () => {
     });
   });
 
-  // Skenario 2 (Negative): Login dengan password yang tidak sesuai
-  test('Skenario 2 (Negative): Login dengan password yang tidak sesuai', async ({ page }, testInfo) => {
+  // Scenario 2 (Negative): Login with invalid password
+  test('Scenario 2 (Negative): Login with invalid password', async ({ page }, testInfo) => {
     await allure.story('Negative Login - Invalid Password');
     await allure.severity('normal');
-    await allure.description('Memverifikasi bahwa sistem menampilkan pesan error saat login dengan password yang salah.');
+    await allure.description('Verify that the system displays an error message when logging in with an invalid password.');
 
-    await test.step('Input username valid dan password salah lalu submit', async () => {
+    await test.step('Input valid username and invalid password then submit', async () => {
       await loginPage.login('standard_user', 'secret_sa');
     });
 
-    await test.step('Validasi pesan error login muncul', async () => {
+    await test.step('Validate login error message is displayed', async () => {
       await expect(loginPage.errorMessage).toBeVisible();
       await expect(loginPage.errorMessage).toContainText(
         'Epic sadface: Username and password do not match any user in this service'
       );
       const errorScreenshot = await page.screenshot();
-      await allure.attachment('Screenshot Validasi Error Password', errorScreenshot, 'image/png');
-      await testInfo.attach('Screenshot Validasi Error Password', {
+      await allure.attachment('Screenshot - Invalid Password Error Validation', errorScreenshot, 'image/png');
+      await testInfo.attach('Screenshot - Invalid Password Error Validation', {
         body: errorScreenshot,
         contentType: 'image/png'
       });
@@ -77,24 +77,24 @@ test.describe('SauceDemo - Skenario Login', () => {
     });
   });
 
-  // Skenario 3 (Negative): Login dengan akun yang tidak ada (bukan accepted username)
-  test('Skenario 3 (Negative): Login dengan akun yang tidak ada di accepted usernames', async ({ page }, testInfo) => {
+  // Scenario 3 (Negative): Login with non-existent account (unregistered username)
+  test('Scenario 3 (Negative): Login with non-existent account (unregistered username)', async ({ page }, testInfo) => {
     await allure.story('Negative Login - Unregistered User');
     await allure.severity('normal');
-    await allure.description('Memverifikasi bahwa sistem menolak login untuk username yang tidak terdaftar.');
+    await allure.description('Verify that the system rejects login for an unregistered username.');
 
-    await test.step('Input akun yang tidak terdaftar lalu submit', async () => {
+    await test.step('Input unregistered account credentials then submit', async () => {
       await loginPage.login('unregistered_user', 'secret_sauce');
     });
 
-    await test.step('Validasi pesan error login muncul', async () => {
+    await test.step('Validate login error message is displayed', async () => {
       await expect(loginPage.errorMessage).toBeVisible();
       await expect(loginPage.errorMessage).toContainText(
         'Epic sadface: Username and password do not match any user in this service'
       );
       const errorScreenshot = await page.screenshot();
-      await allure.attachment('Screenshot Validasi Error Unregistered User', errorScreenshot, 'image/png');
-      await testInfo.attach('Screenshot Validasi Error Unregistered User', {
+      await allure.attachment('Screenshot - Unregistered User Error Validation', errorScreenshot, 'image/png');
+      await testInfo.attach('Screenshot - Unregistered User Error Validation', {
         body: errorScreenshot,
         contentType: 'image/png'
       });
@@ -102,40 +102,40 @@ test.describe('SauceDemo - Skenario Login', () => {
     });
   });
 
-  // Skenario 4 (Positive): Login dengan kredensial sesuai menggunakan 2 akun berbeda
+  // Scenario 4 (Positive): Login with valid credentials using 2 different accounts
   const acceptedUsers = ['standard_user', 'visual_user'];
 
   for (const username of acceptedUsers) {
-    test(`Skenario 4 (Positive): Login berhasil menggunakan akun accepted "${username}"`, async ({ page }, testInfo) => {
+    test(`Scenario 4 (Positive): Successful login using accepted account "${username}"`, async ({ page }, testInfo) => {
       await allure.story(`Positive Login - Accepted User (${username})`);
       await allure.severity('critical');
-      await allure.description(`Memverifikasi alur login berhasil untuk akun valid "${username}" dan halaman katalog inventaris terbuka.`);
+      await allure.description(`Verify successful login flow for valid account "${username}" and verify inventory catalog page is loaded.`);
 
-      await test.step(`Input kredensial valid "${username}" pada login page`, async () => {
+      await test.step(`Input valid credentials for "${username}" on login page`, async () => {
         await loginPage.fillCredentials(username, 'secret_sauce');
         const inputScreenshot = await page.screenshot();
-        await allure.attachment(`Screenshot Input Kredensial Valid - ${username}`, inputScreenshot, 'image/png');
-        await testInfo.attach(`Screenshot Input Kredensial Valid - ${username}`, {
+        await allure.attachment(`Screenshot - Valid Credentials Input (${username})`, inputScreenshot, 'image/png');
+        await testInfo.attach(`Screenshot - Valid Credentials Input (${username})`, {
           body: inputScreenshot,
           contentType: 'image/png'
         });
         await page.waitForTimeout(1000);
       });
 
-      await test.step('Klik tombol Login', async () => {
+      await test.step('Click Login button', async () => {
         await loginPage.clickLogin();
       });
 
-      await test.step('Validasi URL berpindah ke inventory.html', async () => {
+      await test.step('Validate URL navigates to inventory.html', async () => {
         await expect(page).toHaveURL(/.*inventory.html/);
       });
 
-      await test.step('Validasi produk Sauce Labs Backpack tampil di halaman inventaris', async () => {
+      await test.step('Validate Sauce Labs Backpack item is displayed on inventory page', async () => {
         await expect(inventoryPage.backpackImage).toBeVisible();
         await expect(inventoryPage.backpackImage).toHaveAttribute('alt', 'Sauce Labs Backpack');
         const successScreenshot = await page.screenshot();
-        await allure.attachment(`Screenshot Berhasil Login - ${username}`, successScreenshot, 'image/png');
-        await testInfo.attach(`Screenshot Berhasil Login - ${username}`, {
+        await allure.attachment(`Screenshot - Successful Login (${username})`, successScreenshot, 'image/png');
+        await testInfo.attach(`Screenshot - Successful Login (${username})`, {
           body: successScreenshot,
           contentType: 'image/png'
         });

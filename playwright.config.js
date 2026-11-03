@@ -2,9 +2,9 @@
 const { defineConfig } = require('@playwright/test');
 const path = require('path');
 
-// Deteksi nama folder skenario dari argumen CLI jika ada (misal: "tests/Skenario Login" -> "Skenario Login")
+// Detect scenario folder name from CLI arguments if present (e.g., "tests/Login Scenarios" -> "Login Scenarios")
 const scenarioArg = process.argv.find(arg => arg.includes('tests/') || arg.includes('tests\\'));
-let scenarioFolder = 'Skenario Login';
+let scenarioFolder = 'Login Scenarios';
 if (scenarioArg) {
   const match = scenarioArg.match(/tests[/\\]([^/\\]+)/);
   if (match && match[1]) {
@@ -23,7 +23,7 @@ module.exports = defineConfig({
   /* Maximum time one test can run for. */
   timeout: 30 * 1000,
   expect: {
-    timeout: 5000
+    timeout: 5000,
   },
   /* Run tests sequentially with 1 worker so browser window is clearly visible */
   fullyParallel: false,
@@ -35,21 +35,21 @@ module.exports = defineConfig({
     ['allure-playwright', {
       detail: true,
       resultsDir: allureOutputFolder,
-      suiteTitle: true
-    }]
+      suiteTitle: true,
+    }],
   ],
   use: {
     baseURL: 'https://www.saucedemo.com',
-    /* Tampilkan browser saat pengujian dijalankan */
+    /* Display browser window during test execution */
     headless: false,
-    /* Perlambat setiap aksi (1000ms = 1 detik) agar interaksi web terlihat jelas */
+    /* Slow down actions slightly (1000ms = 1s) so interactions are clearly visible */
     launchOptions: {
       slowMo: 1000,
       args: ['--start-maximized'],
     },
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
-    /* Selalu ambil screenshot di setiap pengujian untuk dilampirkan ke report */
+    /* Always capture screenshot for every test to attach to the report */
     screenshot: 'on',
   },
 
@@ -58,7 +58,7 @@ module.exports = defineConfig({
     {
       name: 'chromium',
       use: {
-        viewport: null, // Memungkinkan browser Chromium tampil maximized layar penuh
+        viewport: null, // Allow Chromium browser to display maximized in full screen
       },
     },
   ],

@@ -1,76 +1,80 @@
-<<<<<<< HEAD
 # SauceDemo Automation Testing with Playwright (JavaScript)
 
-Proyek automation testing untuk website [SauceDemo](https://www.saucedemo.com/) menggunakan Playwright dan JavaScript dengan pola Page Object Model (POM).
+Automation testing project for [SauceDemo](https://www.saucedemo.com/) using Playwright and JavaScript following the Page Object Model (POM) pattern.
 
-## Struktur Project
+## Project Structure
 
 ```
 SauceDemo Playwright/
 ├── pages/
-│   ├── loginPage.js                  # Page Object untuk halaman Login
-│   └── inventoryPage.js              # Page Object untuk halaman Inventory / Katalog
+│   ├── loginPage.js                  # Page Object for Login page
+│   └── inventoryPage.js              # Page Object for Inventory / Catalog page
 ├── tests/
-│   └── Skenario Login/               # Folder khusus Skenario Login
-│       └── login.spec.js             # Script pengujian skenario Login (Positif & Negatif)
+│   └── Login Scenarios/              # Test folder for Login Scenarios
+│       └── login.spec.js             # Test script for Login scenarios (Positive & Negative)
+├── scripts/
+│   └── allure-helper.js              # Helper script for multi-folder Allure reports
 ├── package.json
-└── playwright.config.js              # Konfigurasi Playwright
+├── playwright.config.js              # Playwright configuration
+└── README.md
 ```
 
-## Skenario Pengujian di Folder `Skenario Login`
+## Test Scenarios in `Login Scenarios`
 
-1. **Skenario 1 (Negative): Login dengan username yang tidak sesuai**
+1. **Scenario 1 (Negative): Login with invalid username**
    - Username: `standard_us`
    - Password: `secret_sauce`
-   - Validasi: Pesan error muncul (`Epic sadface: Username and password do not match any user in this service`).
+   - Validation: Error message appears (`Epic sadface: Username and password do not match any user in this service`).
 
-2. **Skenario 2 (Negative): Login dengan password yang tidak sesuai**
+2. **Scenario 2 (Negative): Login with invalid password**
    - Username: `standard_user`
    - Password: `secret_sa`
-   - Validasi: Pesan error muncul (`Epic sadface: Username and password do not match any user in this service`).
+   - Validation: Error message appears (`Epic sadface: Username and password do not match any user in this service`).
 
-3. **Skenario 3 (Negative): Login dengan akun yang tidak ada**
-   - Username: `unregistered_user` (tidak ada di daftar accepted usernames)
+3. **Scenario 3 (Negative): Login with non-existent account**
+   - Username: `unregistered_user` (not in accepted usernames list)
    - Password: `secret_sauce`
-   - Validasi: Pesan error muncul (`Epic sadface: Username and password do not match any user in this service`).
+   - Validation: Error message appears (`Epic sadface: Username and password do not match any user in this service`).
 
-4. **Skenario 4 (Positive): Login dengan kredensial yang valid (2 Akun Berbeda)**
-   - Akun 1: `standard_user` + `secret_sauce`
-   - Akun 2: `visual_user` + `secret_sauce`
-   - Validasi:
-     - Berhasil diarahkan ke URL `/inventory.html`.
-     - Objek `<img alt="Sauce Labs Backpack" class="inventory_item_img" data-test="inventory-item-sauce-labs-backpack-img">` berhasil tampil dan terverifikasi.
+4. **Scenario 4 (Positive): Login with valid credentials (2 Different Accounts)**
+   - Account 1: `standard_user` + `secret_sauce`
+   - Account 2: `visual_user` + `secret_sauce`
+   - Validation:
+     - Screenshot captured on credentials input before submission.
+     - Successfully navigated to `/inventory.html`.
+     - Sauce Labs Backpack image object `<img alt="Sauce Labs Backpack" class="inventory_item_img" data-test="inventory-item-sauce-labs-backpack-img">` is visible and verified.
+     - Screenshot captured after successful navigation.
 
 ---
 
-## Cara Menjalankan Test
+## How to Run Tests
 
-Buka terminal di folder project:
+Open a terminal in the project folder:
 ```powershell
-cd "xxx"
+cd "C:\INDAH AUTOMATION\SauceDemo Playwright"
 ```
 
-1. **Jalankan semua test:**
+1. **Run all tests:**
    ```bash
    npm test
    ```
 
-2. **Hanya jalankan folder Skenario Login:**
+2. **Run only Login Scenarios:**
    ```bash
-   npx playwright test "tests/Skenario Login"
+   npx playwright test "tests/Login Scenarios"
    ```
 
-3. **Jalankan test dengan tampilan browser terbuka (Headed mode):**
+3. **Run tests with browser window visible (Headed mode):**
    ```bash
    npm run test:headed
    ```
 
-4. **Jalankan test dengan antarmuka interaktif Playwright UI:**
+4. **Run tests with interactive Playwright UI:**
    ```bash
    npm run test:ui
    ```
 
-5. **Buka Laporan Hasil Test (Playwright HTML Report):**
+5. **Open Playwright HTML Report:**
    ```bash
    npm run test:report
    ```
@@ -79,25 +83,21 @@ cd "xxx"
 
 ## Allure Report
 
-Setelah pengujian dijalankan (`npm test`), hasil pengujian otomatis dikelompokkan ke dalam subfolder `allure-results/` sesuai skenario (misalnya: `allure-results/Skenario Login/`).
+After running the tests (`npm test`), test results are automatically grouped into subfolders inside `allure-results/` based on the scenario name (e.g., `allure-results/Login Scenarios/`).
 
-Setiap test otomatis menyertakan **screenshot** bukti pengujian (input kredensial pada login page, pesan error, serta halaman katalog inventaris setelah berhasil login).
+Every test automatically includes **screenshots** (credential inputs on the login page, error messages, and the inventory page after successful login).
 
 1. **Generate Allure Report:**
    ```bash
    npm run allure:generate
    ```
 
-2. **Buka Allure Report di Browser:**
+2. **Open Allure Report in Browser:**
    ```bash
    npm run allure:open
    ```
 
-3. **Generate dan Langsung Buka Allure Report (Serve):**
+3. **Generate and Serve Allure Report (Live Local Server):**
    ```bash
    npm run allure:serve
    ```
-=======
-# saucedemo-playwright-automation
-SauceDemo Web automation testing using Playwright JavaScript and Allure Report
->>>>>>> 6a0451a5f52cb7408590f155a9a13db0da86dc74
