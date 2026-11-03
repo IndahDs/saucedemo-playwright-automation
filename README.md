@@ -8,10 +8,13 @@ Automation testing project for [SauceDemo](https://www.saucedemo.com/) using Pla
 SauceDemo Playwright/
 ├── pages/
 │   ├── loginPage.js                  # Page Object for Login page
-│   └── inventoryPage.js              # Page Object for Inventory / Catalog page
+│   ├── inventoryPage.js              # Page Object for Inventory & Navigation Menu
+│   └── dynamicCatalogPage.js         # Page Object for Dynamic Catalog page
 ├── tests/
-│   └── Login Scenarios/              # Test folder for Login Scenarios
-│       └── login.spec.js             # Test script for Login scenarios (Positive & Negative)
+│   ├── Login Scenarios/              # Test suite for Login Scenarios (Negative & Positive)
+│   │   └── login.spec.js
+│   └── Dynamic Catalog Scenarios/    # Test suite for Dynamic Catalog Navigation
+│       └── dynamicCatalog.spec.js
 ├── scripts/
 │   └── allure-helper.js              # Helper script for multi-folder Allure reports
 ├── package.json
@@ -19,26 +22,30 @@ SauceDemo Playwright/
 └── README.md
 ```
 
-## Test Scenarios in `Login Scenarios`
+---
+
+## Test Suites & Scenarios
+
+### 1. `Login Scenarios` (`tests/Login Scenarios/login.spec.js`)
 
 1. **Scenario 1 (Negative): Login with invalid username**
-   - Username: `input invalid username`
-   - Password: `input valid password`
+   - Username: `standard_us`
+   - Password: `secret_sauce`
    - Validation: Error message appears (`Epic sadface: Username and password do not match any user in this service`).
 
 2. **Scenario 2 (Negative): Login with invalid password**
-   - Username: `input valid username`
-   - Password: `input invalid password`
+   - Username: `standard_user`
+   - Password: `secret_sa`
    - Validation: Error message appears (`Epic sadface: Username and password do not match any user in this service`).
 
 3. **Scenario 3 (Negative): Login with non-existent account**
    - Username: `unregistered_user` (not in accepted usernames list)
-   - Password: `secret_sauc`
+   - Password: `secret_sauce`
    - Validation: Error message appears (`Epic sadface: Username and password do not match any user in this service`).
 
 4. **Scenario 4 (Positive): Login with valid credentials (2 Different Accounts)**
-   - Account 1: `valid username 1` + `valid password`
-   - Account 2: `valid username 2` + `valid password`
+   - Account 1: `standard_user` + `secret_sauce`
+   - Account 2: `visual_user` + `secret_sauce`
    - Validation:
      - Screenshot captured on credentials input before submission.
      - Successfully navigated to `/inventory.html`.
@@ -47,14 +54,29 @@ SauceDemo Playwright/
 
 ---
 
+### 2. `Dynamic Catalog Scenarios` (`tests/Dynamic Catalog Scenarios/dynamicCatalog.spec.js`)
+
+**Scenario 2: Follow-up flow from Scenario 4 to Dynamic Catalog - Spinner**
+- Account: Last successfully logged-in user from Scenario 4 (`visual_user` + `secret_sauce`).
+- Flow:
+  1. Log in with `visual_user` and verify inventory page is displayed.
+  2. Click Burger menu button (`#react-burger-menu-btn`).
+  3. Click **Dynamic Catalog** sidebar link (`[data-test="dynamic-catalog-sidebar-link"]`) to expand submenu options (*Lazy Load*, *Spinner*, *Slider*).
+  4. Click **Spinner** option (`[data-test="dynamic-catalog-spinner-link"]`).
+  5. Validate URL navigates to `/dynamic-catalog-spinner.html` and verify the title element:
+     `<span class="title" data-test="title">Dynamic Catalog - Spinner</span>`.
+  6. Automated screenshots attached at each step.
+
+---
+
 ## How to Run Tests
 
 Open a terminal in the project folder:
 ```powershell
-cd "XXX"
+cd "xxx"
 ```
 
-1. **Run all tests:**
+1. **Run all test suites:**
    ```bash
    npm test
    ```
@@ -64,9 +86,9 @@ cd "XXX"
    npx playwright test "tests/Login Scenarios"
    ```
 
-3. **Run tests with browser window visible (Headed mode):**
+3. **Run only Dynamic Catalog Scenarios:**
    ```bash
-   npm run test:headed
+   npx playwright test "tests/Dynamic Catalog Scenarios"
    ```
 
 4. **Run tests with interactive Playwright UI:**
@@ -83,21 +105,23 @@ cd "XXX"
 
 ## Allure Report
 
-After running the tests (`npm test`), test results are automatically grouped into subfolders inside `allure-results/` based on the scenario name (e.g., `allure-results/Login Scenarios/`).
+After running tests (`npm test` or specific suites), test results are automatically grouped into subfolders inside `allure-results/` based on the scenario name:
+- `allure-results/Login Scenarios/`
+- `allure-results/Dynamic Catalog Scenarios/`
 
-Every test automatically includes **screenshots** (credential inputs on the login page, error messages, and the inventory page after successful login).
+Every test automatically captures and embeds **screenshots** for input, intermediate actions, and final validations into the Allure report.
 
-1. **Generate Allure Report:**
+1. **Generate and Open Allure Report (Live Local Server):**
+   ```bash
+   npm run allure:serve
+   ```
+
+2. **Generate Static Report:**
    ```bash
    npm run allure:generate
    ```
 
-2. **Open Allure Report in Browser:**
+3. **Open Static Report in Browser:**
    ```bash
    npm run allure:open
-   ```
-
-3. **Generate and Serve Allure Report (Live Local Server):**
-   ```bash
-   npm run allure:serve
    ```
